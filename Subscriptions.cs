@@ -17,6 +17,9 @@ namespace Weather
     }
     class Subscriptions
     {
+
+        List<Subscription> subscriptions = new List<Subscription>();
+
         public void Feed(Weather weather)
         {
             foreach (Subscription subscription in subscriptions)
@@ -47,11 +50,10 @@ namespace Weather
 
         public bool IsEmpty() => subscriptions.Count == 0;
 
-        List<Subscription> subscriptions = new List<Subscription>();
     }
 
 
-    class WeatherBroadcast
+    public class WeatherBroadcast
     {
         Dictionary<string, Subscriptions> CitySubscriptions = new Dictionary<string, Subscriptions>();
 
