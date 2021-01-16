@@ -18,4 +18,44 @@ namespace Weather
             float xd = weatherForecast.coord.lon;
         }
     }
+
+    class User
+    {
+        public void Subscribe()
+        {
+            //TODO
+        }
+
+        public void Unsubscribe()
+        {
+            //TODO
+        }
+
+        public void SetStrategy(Strategy strategy)
+        {
+            //TODO
+        }
+    }
+
+    class Strategy
+    {
+        public string name;
+        public bool isOk;
+    }
+
+    interface IObservator
+    {
+        public void Observe(Weather weather);
+
+    }
+
+    class UserWeatherObserver
+    {
+        private readonly User user;
+
+        public UserWeatherObserver(User userArg)
+        {
+            user = userArg;
+        }
+    }
 }
