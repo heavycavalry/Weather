@@ -21,12 +21,12 @@ namespace Weather
 
     class User
     {
-        public void Subscribe()
+        public void Subscribe(string city)
         {
             //TODO
         }
 
-        public void Unsubscribe()
+        public void Unsubscribe(string city)
         {
             //TODO
         }
@@ -35,18 +35,6 @@ namespace Weather
         {
             //TODO
         }
-    }
-
-    class Strategy
-    {
-        public string name;
-        public bool isOk;
-    }
-
-    interface IObservator
-    {
-        public void Observe(Weather weather);
-
     }
 
     class UserWeatherObserver
@@ -58,4 +46,6 @@ namespace Weather
             user = userArg;
         }
     }
+
+
 }
