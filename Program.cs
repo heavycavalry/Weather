@@ -19,18 +19,22 @@ namespace Weather
             float xd = weatherForecast.coord.lon;
         }
     }
+   
 
     class User 
     {
-        Dictionary<string, string> UserSubscriptions = new Dictionary<string, string>();
+        Dictionary<string, string> UserSubscriptions = new Dictionary<string, string>(); // (city, Subscription)
 
         WeatherBroadcast weatherBroadcast;
 
         public Strategy strategy;
 
+
         public void Subscribe(string city)
         {
-            
+            IObservator observator = new UserWeatherObserver(this, city);
+
+            weatherBroadcast.Subscribe(city, observator);
         }
 
         public void Unsubscribe(string city)
@@ -55,7 +59,7 @@ namespace Weather
         public UserWeatherObserver(User userArg, string cityArg)
         {
             user = userArg;
-            city = cityArg;\]
+            city = cityArg;
         }
 
         public void Observe(Weather weather)
