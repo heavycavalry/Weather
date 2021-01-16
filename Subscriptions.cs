@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Weather
 {
@@ -16,15 +17,35 @@ namespace Weather
     }
     class Subscriptions
     {
-        public void Accept(Weather weather)
+        public void Feed(Weather weather)
         {
-            //TODO
+            foreach (Subscription subscription in subscriptions)
+            {
+                subscription.Observator.Observe(weather);
+            }
         }
 
         public void Add(Subscription subscription)
         {
             subscriptions.Add(subscription);
         }
+
+        public void Remove(string ID)
+        {
+            Subscription removedItem = null;
+
+            foreach (Subscription s in subscriptions)
+            {
+                if (s.ID == ID)
+                {
+                    removedItem = s;
+                }
+            }
+
+            subscriptions.Remove(removedItem);
+        }
+
+        public bool IsEmpty() => subscriptions.Count == 0;
 
         List<Subscription> subscriptions = new List<Subscription>();
     }
@@ -49,12 +70,33 @@ namespace Weather
             return subscription.ID;
         }
 
+        public void Unsubscribe(string ID, string city)
+        {
+            if (CitySubscriptions.ContainsKey(city))
+            {
+                CitySubscriptions[city].Remove(ID);
+
+                if (CitySubscriptions[city].IsEmpty())
+                {
+                    CitySubscriptions.Remove(city);
+                }
+            }
+        }
+
         public void EnsureSubscriptionForCity(string city)
         {
             if (!CitySubscriptions.ContainsKey(city))
             {
                 Subscriptions subscriptions = new Subscriptions();
                 CitySubscriptions.Add(city, subscriptions);
+            }
+        }
+
+        public void Feed(string city, Weather weather)
+        {
+            if (CitySubscriptions.ContainsKey(city))
+            {
+                CitySubscriptions[city].Feed(weather);
             }
         }
     }
