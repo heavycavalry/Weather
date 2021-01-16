@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Collections.Generic;
 
 namespace Weather
 {
@@ -19,11 +20,17 @@ namespace Weather
         }
     }
 
-    class User
+    class User 
     {
+        Dictionary<string, string> UserSubscriptions = new Dictionary<string, string>();
+
+        WeatherBroadcast weatherBroadcast;
+
+        public Strategy strategy;
+
         public void Subscribe(string city)
         {
-            //TODO
+            
         }
 
         public void Unsubscribe(string city)
@@ -35,15 +42,29 @@ namespace Weather
         {
             //TODO
         }
+
     }
 
-    class UserWeatherObserver
+    class UserWeatherObserver : IObservator
     {
         private readonly User user;
+        private readonly string city;
 
-        public UserWeatherObserver(User userArg)
+
+
+        public UserWeatherObserver(User userArg, string cityArg)
         {
             user = userArg;
+            city = cityArg;\]
+        }
+
+        public void Observe(Weather weather)
+        {
+            if (user.strategy.IsOk(weather))
+            {
+                Console.WriteLine($"The weather in ${city} will be good, have fun!");
+            }
+
         }
     }
 
