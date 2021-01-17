@@ -6,7 +6,7 @@ namespace Weather
 {
     class User
     {
-        Dictionary<string, string> UserSubscriptions = new Dictionary<string, string>(); // (city, Subscription)
+        Dictionary<string, string> UserSubscriptions = new Dictionary<string, string>(); // (city -> ID)
 
         WeatherBroadcast weatherBroadcast;
 
@@ -15,19 +15,26 @@ namespace Weather
 
         public void Subscribe(string city)
         {
+            if (UserSubscriptions.ContainsKey(city)) {
             IObservator observator = new UserWeatherObserver(this, city);
-
-            weatherBroadcast.Subscribe(city, observator);
+            var id = weatherBroadcast.Subscribe(city, observator);
+            UserSubscriptions.Add(city, id);
+            }
         }
 
         public void Unsubscribe(string city)
         {
-            //TODO
+            if (UserSubscriptions.ContainsKey(city)) {
+                
+               var subscriptionId = UserSubscriptions[city];
+                weatherBroadcast.Unsubscribe(subscriptionId, city);
+                UserSubscriptions.Remove(city);
+            }
         }
 
         public void SetStrategy(Strategy strategy)
         {
-            //TODO
+            this.strategy = strategy;
         }
 
     }
