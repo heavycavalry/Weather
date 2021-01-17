@@ -6,7 +6,7 @@ namespace Weather
 {
     public interface IObservator
     {
-        public void Observe(Weather weather);
+        public void Observe(WeatherForecast weather);
 
     }
 
@@ -20,7 +20,7 @@ namespace Weather
 
         List<Subscription> subscriptions = new List<Subscription>();
 
-        public void Notify(Weather weather)
+        public void Notify(WeatherForecast weather)
         {
             foreach (Subscription subscription in subscriptions)
             {

@@ -52,7 +52,7 @@ namespace Weather
             city = cityArg;
         }
 
-        public void Observe(Weather weather)
+        public void Observe(WeatherForecast weather)
         {
             if (user.strategy.IsOk(weather))
             {

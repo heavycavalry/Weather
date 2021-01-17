@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Weather
 {
     public class WeatherBroadcast //PUBLISHER
     {
-        Dictionary<string, Subscriptions> CitySubscriptions = new Dictionary<string, Subscriptions>();
+        internal Dictionary<string, Subscriptions> CitySubscriptions = new Dictionary<string, Subscriptions>();
+
+        public WeatherBroadcast()
+        {
+            new WeatherBroadcastFeeder(this).start();
+        }
 
 
         //TWORZY SUBSKRYPCJE DLA DANEGO CITY I OBSERWATORA, DODAJE JĄ 
@@ -44,7 +50,7 @@ namespace Weather
             }
         }
 
-        public void NotifySubscribers(string city, Weather weather)
+        public void NotifySubscribers(string city, WeatherForecast weather)
         {
             if (CitySubscriptions.ContainsKey(city))
             {
@@ -60,6 +66,27 @@ namespace Weather
         {
             this.weatherBroadcast = broadcast;
         }
+
+        void feedingProcess()
+        {
+            while (true)
+            {
+                foreach (var city in weatherBroadcast.CitySubscriptions.Keys)
+                {
+                    var weather = WeatherClient.GetWeather(city);
+                    weatherBroadcast.NotifySubscribers(city, weather);
+                }
+                Thread.Sleep(2000); // usypia/zawiesza watek na 2 sekundy
+            }
+        }
+
+        public void start()
+        {
+            var thread = new Thread(this.feedingProcess);
+            thread.Start(); //włączamy nowy wątek
+        }
+        
+        
     }
 
 }

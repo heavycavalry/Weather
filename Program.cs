@@ -4,20 +4,31 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Weather
 {
     class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var url = "https://api.openweathermap.org/data/2.5/weather?q=Krakow&appid=db73877da80bcf86ce14d0db9c8b06a3";
-            using var client = new HttpClient();
-
-            var content = await client.GetStringAsync(url);
-            var weatherForecast = JsonSerializer.Deserialize<WeatherForecast>(content);
-            float xd = weatherForecast.coord.lon;
+            Thread thread1 = new Thread(ThreadWork.DoWork);
+            thread1.Start();
+            for (int i = 0; i<3; i++) {
+                Console.WriteLine("In main.");
+                Thread.Sleep(100);
+            }
         }
     }
 
+}
+
+public class ThreadWork
+{
+    public static void DoWork()
+    {
+        while (true)
+        {
+        }
+    }
 }

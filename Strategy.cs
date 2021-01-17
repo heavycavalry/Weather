@@ -3,7 +3,7 @@
     interface Strategy
     {
         public string Name();
-        public bool IsOk(Weather weather);
+        public bool IsOk(WeatherForecast weather);
     }
 
 
