@@ -10,7 +10,7 @@ namespace Weather
 
         WeatherBroadcast weatherBroadcast;
 
-        public Strategy strategy;
+        public IStrategy strategy;
 
 
         public void Subscribe(string city)
@@ -32,7 +32,7 @@ namespace Weather
             }
         }
 
-        public void SetStrategy(Strategy strategy)
+        public void SetStrategy(IStrategy strategy)
         {
             this.strategy = strategy;
         }
