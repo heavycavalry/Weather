@@ -2,58 +2,27 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Weather
-{
-    public interface IObservator
-    {
-        public void Observe(WeatherForecast weather);
-
+namespace Weather {
+    public interface Subscriber {
+        public void Observe(WeatherInCity weather);
     }
 
-    class Subscription
-    {
-        public string ID;
-        public IObservator Observator;
-    }
-    class Subscriptions
-    {
+    class Subscriptions {
+        List<Subscriber> subscriptions = new List<Subscriber>();
 
-        List<Subscription> subscriptions = new List<Subscription>();
-
-        public void Notify(WeatherForecast weather)
-        {
-            foreach (Subscription subscription in subscriptions)
-            {
-                subscription.Observator.Observe(weather);
+        public void Notify(WeatherInCity weather) {
+            foreach (Subscriber subscriber in subscriptions) {
+                subscriber.Observe(weather);
             }
         }
 
-        public void Add(Subscription subscription)
-        {
+        public void Add(Subscriber subscription) {
             subscriptions.Add(subscription);
         }
 
-        public void Remove(string ID)
-        {
-            Subscription removedItem = null;
-
-            foreach (Subscription s in subscriptions)
-            {
-                if (s.ID == ID)
-                {
-                    removedItem = s;
-                }
-            }
-
-            subscriptions.Remove(removedItem);
+        public void Remove(Subscriber subscriber) {
+            subscriptions.Remove(subscriber);
         }
-
         public bool IsEmpty() => subscriptions.Count == 0;
-
     }
-
 }
-
-
-
-
