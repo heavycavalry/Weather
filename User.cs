@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Weather {
-    class User : Subscriber {
+    public class User : Subscriber {
         WeatherBroadcast weatherBroadcast;
 
         public IStrategy strategy;
+
+        public void SetWeatherBroadcast(WeatherBroadcast w) {
+            weatherBroadcast = w;
+        }
 
 
         public void Subscribe(string city) {

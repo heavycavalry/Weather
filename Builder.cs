@@ -8,12 +8,7 @@ namespace Weather
         public interface IBuilder
         {
             void CreateUser();
-            void CreateUserObserverForUser();
             void CreateWeatherBroadcastForUser();
-            void CreateWeatherBroadcastFeeder();
-            void StartWeatherBroadcastFeeder();
-            WeatherBroadcastFeeder GetWeatherBroadcastFeeder();
-            IObservator GetUserWeatherObserver();
             User GetUser();
             WeatherBroadcast GetWeatherBroadcast();
         }
@@ -21,7 +16,6 @@ namespace Weather
         public class ProgramBuilder : IBuilder
         {
             private User _user;
-            private UserWeatherObserver _userWeatherObserver;
             private WeatherBroadcast _weatherBroadcast;
             private WeatherBroadcastFeeder _weatherBroadcastFeeder;
             private string city;
@@ -84,11 +78,10 @@ namespace Weather
                         throw new Exception();
                         break;
                 }
+                
                 CreateUser();
-                CreateUserObserverForUser();
                 CreateWeatherBroadcastForUser();
-                CreateWeatherBroadcastFeeder();
-                StartWeatherBroadcastFeeder();
+                _user.SetWeatherBroadcast(_weatherBroadcast);
             }
             public void CreateUser()
             {
@@ -96,37 +89,13 @@ namespace Weather
                 _user.Subscribe(city);
                 _user.SetStrategy(_strategy);
             }
-
-            public void CreateUserObserverForUser()
-            {
-                _userWeatherObserver = new UserWeatherObserver(_user, city);
-            }
+            
 
             public void CreateWeatherBroadcastForUser()
             {
                 _weatherBroadcast = new WeatherBroadcast();
-                _weatherBroadcast.Subscribe(city, _userWeatherObserver);
             }
 
-            public void CreateWeatherBroadcastFeeder()
-            {
-                _weatherBroadcastFeeder = new WeatherBroadcastFeeder(_weatherBroadcast);
-            }
-
-            public void StartWeatherBroadcastFeeder()
-            {
-                _weatherBroadcastFeeder.start();
-            }
-
-            public WeatherBroadcastFeeder GetWeatherBroadcastFeeder()
-            {
-                return _weatherBroadcastFeeder;
-            }
-
-            public IObservator GetUserWeatherObserver()
-            {
-                return _userWeatherObserver;
-            }
 
             public User GetUser()
             {
