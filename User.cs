@@ -6,7 +6,7 @@ namespace Weather {
     class User : Subscriber {
         WeatherBroadcast weatherBroadcast;
 
-        public Strategy strategy;
+        public IStrategy strategy;
 
 
         public void Subscribe(string city) {
@@ -17,7 +17,7 @@ namespace Weather {
             weatherBroadcast.Unsubscribe(city, this);
         }
 
-        public void SetStrategy(Strategy strategy) {
+        public void SetStrategy(IStrategy strategy) {
             this.strategy = strategy;
         }
 
