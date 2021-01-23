@@ -13,8 +13,7 @@ namespace Weather {
         }
     }
 
-    public class WeatherBroadcast //PUBLISHER
-    {
+    public class WeatherBroadcast {
         internal Dictionary<string, Subscriptions> CitySubscriptions = new Dictionary<string, Subscriptions>();
 
         public WeatherBroadcast() {
@@ -22,9 +21,6 @@ namespace Weather {
         }
 
 
-        //TWORZY SUBSKRYPCJE DLA DANEGO CITY I OBSERWATORA, DODAJE JĄ 
-        //DO REJESTRU SUBSKRYPCJI I ZWRACA ID TEJ SUBSKRYPCJI ZEBY POTEM
-        //MOZNA BYLO SIE DO NIEGO DOSTAC I GO USUNAC, NIE MA ZA CO
         public void Subscribe(string city, Subscriber subscriber) {
             EnsureSubscriptionForCity(city);
             CitySubscriptions[city].Add(subscriber);
@@ -37,6 +33,14 @@ namespace Weather {
                 if (CitySubscriptions[city].IsEmpty()) {
                     CitySubscriptions.Remove(city);
                 }
+            }
+        }
+
+        public void UnsubscribeAll(Subscriber subscriber) {
+            var cities = CitySubscriptions.Keys;
+
+            foreach (var city in cities) {
+                Unsubscribe(city, subscriber);
             }
         }
 
@@ -68,7 +72,7 @@ namespace Weather {
                     weatherBroadcast.NotifySubscribers(city, weather);
                 }
 
-                Thread.Sleep(2000); // usypia/zawiesza watek na 2 sekundy
+                Thread.Sleep(5000); // usypia/zawiesza watek na 5 sekund
             }
         }
 
